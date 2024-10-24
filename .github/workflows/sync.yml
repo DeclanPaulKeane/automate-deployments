@@ -24,6 +24,11 @@ jobs:
           deck gateway dump --yes --konnect-token $KONNECT_TOKEN --konnect-control-plane-name green-team -o green-team/green-team-backup.yaml
         env:
           KONNECT_TOKEN: ${{ secrets.KONNECT_TOKEN }}
+      - name: Upload Backup Artifact for Green Team
+        uses: actions/upload-artifact@v3
+        with:
+          name: green-team-backup
+          path: green-team/green-team-backup.yaml
 
       - name: Sync Configuration to Konnect for Green Team
         run: |
@@ -37,6 +42,12 @@ jobs:
         env:
           KONNECT_TOKEN: ${{ secrets.KONNECT_TOKEN }}
 
+      - name: Upload Backup Artifact for Blue Team
+        uses: actions/upload-artifact@v3
+        with:
+          name: blue-team-backup
+          path: blue-team/blue-team-backup.yaml
+          
       - name: Sync Configuration to Konnect for Blue Team
         run: |
           deck gateway sync --konnect-token $KONNECT_TOKEN --konnect-control-plane-name blue-team blue-team/blue-team.yaml

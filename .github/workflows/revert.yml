@@ -17,11 +17,21 @@ jobs:
           tar -xf deck.tar.gz -C /tmp
           cp /tmp/deck /usr/local/bin/
 
+      - name: Download Backup Artifact for Green Team
+        uses: actions/download-artifact@v3
+        with:
+          name: green-team-backup
+
       - name: Revert Configuration for Green Team
         run: |
           deck gateway sync --konnect-token $KONNECT_TOKEN --konnect-control-plane-name green-team green-team/green-team-backup.yaml
         env:
           KONNECT_TOKEN: ${{ secrets.KONNECT_TOKEN }}
+
+      - name: Download Backup Artifact for Blue Team
+        uses: actions/download-artifact@v3
+        with:
+          name: blue-team-backup
 
       - name: Revert Configuration for Blue Team
         run: |
