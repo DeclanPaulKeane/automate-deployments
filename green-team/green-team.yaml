@@ -25,9 +25,8 @@ services:
     request_buffering: true
     response_buffering: true
     strip_path: true
-  write_timeout: 60000
   - https_redirect_status_code: 426
-    name: v1-Green-Team-API-Route
+    name: Green-Team-Route-V2
     path_handling: v0
     paths:
     - /v2/green
