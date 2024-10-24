@@ -1,0 +1,28 @@
+_format_version: "3.0"
+_konnect:
+  control_plane_name: green-team
+services:
+- connect_timeout: 60000
+  enabled: true
+  host: httpbin.konghq.com
+  name: Green-Team-API-Service
+  path: /anything
+  port: 80
+  protocol: http
+  read_timeout: 60000
+  retries: 5
+  routes:
+  - https_redirect_status_code: 426
+    name: Green-Team-API-Route
+    path_handling: v0
+    paths:
+    - /v1/green
+    preserve_host: false
+    protocols:
+    - http
+    - https
+    regex_priority: 0
+    request_buffering: true
+    response_buffering: true
+    strip_path: true
+  write_timeout: 60000
