@@ -31,7 +31,7 @@ jobs:
           git push
         env:
           KONNECT_TOKEN: ${{ secrets.KONNECT_TOKEN }}
-          
+
       - name: Sync Configuration to Konnect for Green Team
         run: |
           deck gateway sync --konnect-token $KONNECT_TOKEN --konnect-control-plane-name green-team green-team/green-team.yaml
