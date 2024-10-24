@@ -21,7 +21,7 @@ jobs:
 
       - name: Backup Configuration for Green Team
         run: |
-          deck gateway dump --konnect-token --yes $KONNECT_TOKEN --konnect-control-plane-name green-team -o green-team/green-team-backup.yaml
+          deck gateway dump --yes --konnect-token $KONNECT_TOKEN --konnect-control-plane-name green-team -o green-team/green-team-backup.yaml
         env:
           KONNECT_TOKEN: ${{ secrets.KONNECT_TOKEN }}
 
@@ -33,7 +33,7 @@ jobs:
 
       - name: Backup Configuration for Blue Team
         run: |
-          deck gateway dump --konnect-token $KONNECT_TOKEN --yes --konnect-control-plane-name blue-team -o blue-team/blue-team-backup.yaml
+          deck gateway dump --yes --konnect-token $KONNECT_TOKEN  --konnect-control-plane-name blue-team -o blue-team/blue-team-backup.yaml
         env:
           KONNECT_TOKEN: ${{ secrets.KONNECT_TOKEN }}
 
