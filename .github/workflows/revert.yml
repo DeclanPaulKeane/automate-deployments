@@ -21,6 +21,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: green-team-backup
+          run-id: ${{ github.event.workflow_run.id }}
 
       - name: Check if Green Team Backup Exists
         run: |
@@ -39,6 +40,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: blue-team-backup
+          run-id: ${{ github.event.workflow_run.id }}
 
       - name: Check if Blue Team Backup Exists
         run: |
