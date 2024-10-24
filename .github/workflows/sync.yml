@@ -19,8 +19,15 @@ jobs:
           tar -xf deck.tar.gz -C /tmp
           cp /tmp/deck /usr/local/bin/
 
-      - name: Sync Configuration to Konnect
+      - name: Sync Configuration to Konnect for Green Team
         run: |
           deck gateway sync --konnect-token $KONNECT_TOKEN --konnect-control-plane-name green-team green-team/green-team.yaml
         env:
           KONNECT_TOKEN: kpat_nzeieOsmEtWweFexxyQ1fLMyzSRNWjz6Zkty5EZLFZLZMAJeB
+
+      - name: Sync Configuration to Konnect for Blue Team
+        run: |
+          deck gateway sync --konnect-token $KONNECT_TOKEN --konnect-control-plane-name blue-team blue-team/blue-team.yaml
+        env:
+          KONNECT_TOKEN: kpat_nzeieOsmEtWweFexxyQ1fLMyzSRNWjz6Zkty5EZLFZLZMAJeB
+
