@@ -9,7 +9,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install DecK
         run: |
@@ -18,7 +18,7 @@ jobs:
           cp /tmp/deck /usr/local/bin/
 
       - name: Download Backup Artifact for Green Team
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: green-team-backup
 
@@ -29,7 +29,7 @@ jobs:
           KONNECT_TOKEN: ${{ secrets.KONNECT_TOKEN }}
 
       - name: Download Backup Artifact for Blue Team
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: blue-team-backup
 

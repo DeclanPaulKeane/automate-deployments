@@ -11,7 +11,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         
       - name: Install DecK
         run: |
@@ -29,7 +29,7 @@ jobs:
           KONNECT_TOKEN: ${{ secrets.KONNECT_TOKEN }}
 
       - name: Upload Backup Artifact for Green Team
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: green-team-backup
           path: green-team/green-team-backup.yaml
@@ -44,7 +44,7 @@ jobs:
           KONNECT_TOKEN: ${{ secrets.KONNECT_TOKEN }}
 
       - name: Upload Backup Artifact for Blue Team
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: blue-team-backup
           path: blue-team/blue-team-backup.yaml
