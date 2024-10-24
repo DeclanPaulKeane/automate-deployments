@@ -22,6 +22,13 @@ jobs:
         with:
           name: green-team-backup
 
+      - name: Check if Green Team Backup Exists
+        run: |
+          if [ ! -f green-team/green-team-backup.yaml ]; then
+            echo "Green team backup artifact not found."
+            exit 1
+          fi
+
       - name: Revert Configuration for Green Team
         run: |
           deck gateway sync --konnect-token $KONNECT_TOKEN --konnect-control-plane-name green-team green-team/green-team-backup.yaml
@@ -32,6 +39,13 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: blue-team-backup
+
+      - name: Check if Blue Team Backup Exists
+        run: |
+          if [ ! -f blue-team/blue-team-backup.yaml ]; then
+            echo "Blue team backup artifact not found."
+            exit 1
+          fi
 
       - name: Revert Configuration for Blue Team
         run: |
