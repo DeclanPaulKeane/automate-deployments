@@ -25,17 +25,17 @@ services:
     request_buffering: true
     response_buffering: true
     strip_path: true
-  # - https_redirect_status_code: 426
-  #   name: Green-Team-Route-V2
-  #   path_handling: v0
-  #   paths:
-  #   - /v2/green
-  #   preserve_host: false
-  #   protocols:
-  #   - http
-  #   - https
-  #   regex_priority: 0
-  #   request_buffering: true
-  #   response_buffering: true
-  #   strip_path: true
+  - https_redirect_status_code: 426
+    name: Green-Team-Route-V2
+    path_handling: v0
+    paths:
+    - /v2/green
+    preserve_host: false
+    protocols:
+    - http
+    - https
+    regex_priority: 0
+    request_buffering: true
+    response_buffering: true
+    strip_path: true
   write_timeout: 60000

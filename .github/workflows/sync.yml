@@ -3,7 +3,7 @@ name: Sync Kong Configuration
 on:
   push:
     branches:
-      - main  # Change to your default branch if necessary
+      - main
 
 jobs:
   sync:
@@ -19,15 +19,19 @@ jobs:
           tar -xf deck.tar.gz -C /tmp
           cp /tmp/deck /usr/local/bin/
 
+      - name: Backup Configuration for Green Team
+        run: |
+          deck gateway dump --konnect-token $KONNECT_TOKEN --konnect-control-plane-name green-team -o green-team/green-team-backup.yaml
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git add green-team/green-team-backup.yaml
+          git commit -m "Backup configuration for Green Team"
+          git push
+        env:
+          KONNECT_TOKEN: ${{ secrets.KONNECT_TOKEN }}
+
       - name: Sync Configuration to Konnect for Green Team
         run: |
           deck gateway sync --konnect-token $KONNECT_TOKEN --konnect-control-plane-name green-team green-team/green-team.yaml
         env:
-          KONNECT_TOKEN: kpat_nzeieOsmEtWweFexxyQ1fLMyzSRNWjz6Zkty5EZLFZLZMAJeB
-
-      - name: Sync Configuration to Konnect for Blue Team
-        run: |
-          deck gateway sync --konnect-token $KONNECT_TOKEN --konnect-control-plane-name blue-team blue-team/blue-team.yaml
-        env:
-          KONNECT_TOKEN: kpat_nzeieOsmEtWweFexxyQ1fLMyzSRNWjz6Zkty5EZLFZLZMAJeB
-
+          KONNECT_TOKEN: ${{ secrets.KONNECT_TOKEN }}
