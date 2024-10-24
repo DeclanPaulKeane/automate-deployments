@@ -1,7 +1,7 @@
 name: Revert Kong Configuration
 
 on:
-  workflow_dispatch:
+  workflow_dispatch:  # Allows manual triggering of the revert workflow
 
 jobs:
   revert:
@@ -20,5 +20,11 @@ jobs:
       - name: Revert Configuration for Green Team
         run: |
           deck gateway sync --konnect-token $KONNECT_TOKEN --konnect-control-plane-name green-team green-team/green-team-backup.yaml
+        env:
+          KONNECT_TOKEN: ${{ secrets.KONNECT_TOKEN }}
+
+      - name: Revert Configuration for Blue Team
+        run: |
+          deck gateway sync --konnect-token $KONNECT_TOKEN --konnect-control-plane-name blue-team blue-team/blue-team-backup.yaml
         env:
           KONNECT_TOKEN: ${{ secrets.KONNECT_TOKEN }}
