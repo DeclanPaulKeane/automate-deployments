@@ -8,6 +8,8 @@ on:
 jobs:
   sync:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write  # Ensure the workflow has permission to write to the repository
 
     steps:
       - name: Checkout
@@ -27,11 +29,5 @@ jobs:
           git add green-team/green-team-backup.yaml
           git commit -m "Backup configuration for Green Team"
           git push
-        env:
-          KONNECT_TOKEN: ${{ secrets.KONNECT_TOKEN }}
-
-      - name: Sync Configuration to Konnect for Green Team
-        run: |
-          deck gateway sync --konnect-token $KONNECT_TOKEN --konnect-control-plane-name green-team green-team/green-team.yaml
         env:
           KONNECT_TOKEN: ${{ secrets.KONNECT_TOKEN }}
