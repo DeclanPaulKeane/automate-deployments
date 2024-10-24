@@ -1,10 +1,12 @@
-name: Revert Kong Configuration
+name: Sync Kong Configuration
 
 on:
-  workflow_dispatch:  # Allows manual triggering of the revert workflow
+  push:
+    branches:
+      - main
 
 jobs:
-  revert:
+  sync:
     runs-on: ubuntu-latest
 
     steps:
@@ -17,40 +19,44 @@ jobs:
           tar -xf deck.tar.gz -C /tmp
           cp /tmp/deck /usr/local/bin/
 
-      - name: Download Backup Artifact for Green Team
-        uses: actions/download-artifact@v4
-        with:
-          name: green-team-backup
-          run-id: ${{ github.event.workflow_run.id }}
-
-      - name: Check if Green Team Backup Exists
+      - name: Backup Configuration for Green Team
         run: |
-          if [ ! -f green-team/green-team-backup.yaml ]; then
-            echo "Green team backup artifact not found."
-            exit 1
+          if [ -f green-team/green-team-backup.yaml ]; then
+            rm green-team/green-team-backup.yaml
           fi
-
-      - name: Revert Configuration for Green Team
-        run: |
-          deck gateway sync --konnect-token $KONNECT_TOKEN --konnect-control-plane-name green-team green-team/green-team-backup.yaml
+          deck gateway dump --konnect-token $KONNECT_TOKEN --konnect-control-plane-name green-team -o green-team/green-team-backup.yaml
         env:
           KONNECT_TOKEN: ${{ secrets.KONNECT_TOKEN }}
 
-      - name: Download Backup Artifact for Blue Team
-        uses: actions/download-artifact@v4
+      - name: Upload Backup Artifact for Green Team
+        uses: actions/upload-artifact@v4
+        with:
+          name: green-team-backup
+          path: green-team/green-team-backup.yaml
+
+      - name: Backup Configuration for Blue Team
+        run: |
+          if [ -f blue-team/blue-team-backup.yaml ]; then
+            rm blue-team/blue-team-backup.yaml
+          fi
+          deck gateway dump --konnect-token $KONNECT_TOKEN --konnect-control-plane-name blue-team -o blue-team/blue-team-backup.yaml
+        env:
+          KONNECT_TOKEN: ${{ secrets.KONNECT_TOKEN }}
+
+      - name: Upload Backup Artifact for Blue Team
+        uses: actions/upload-artifact@v4
         with:
           name: blue-team-backup
-          run-id: ${{ github.event.workflow_run.id }}
+          path: blue-team/blue-team-backup.yaml
 
-      - name: Check if Blue Team Backup Exists
+      - name: Sync Configuration to Konnect for Green Team
         run: |
-          if [ ! -f blue-team/blue-team-backup.yaml ]; then
-            echo "Blue team backup artifact not found."
-            exit 1
-          fi
+          deck gateway sync --konnect-token $KONNECT_TOKEN --konnect-control-plane-name green-team green-team/green-team.yaml
+        env:
+          KONNECT_TOKEN: ${{ secrets.KONNECT_TOKEN }}
 
-      - name: Revert Configuration for Blue Team
+      - name: Sync Configuration to Konnect for Blue Team
         run: |
-          deck gateway sync --konnect-token $KONNECT_TOKEN --konnect-control-plane-name blue-team blue-team/blue-team-backup.yaml
+          deck gateway sync --konnect-token $KONNECT_TOKEN --konnect-control-plane-name blue-team blue-team/blue-team.yaml
         env:
           KONNECT_TOKEN: ${{ secrets.KONNECT_TOKEN }}
