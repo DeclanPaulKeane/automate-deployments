@@ -23,7 +23,7 @@ jobs:
 
       - name: Backup Configuration for Green Team
         run: |
-          deck gateway dump --konnect-token $KONNECT_TOKEN --konnect-control-plane-name green-team -o green-team/green-team-backup.yaml
+          deck gateway dump --konnect-token $KONNECT_TOKEN --yes --konnect-control-plane-name green-team -o green-team/green-team-backup.yaml
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
           git add green-team/green-team-backup.yaml
